@@ -1,0 +1,10 @@
+[k3s]
+k1 ansible_ssh_host=192.168.1.25 ansible_user=k1
+k2 ansible_ssh_host=192.168.1.26 ansible_user=k2
+k3 ansible_ssh_host=192.168.1.27 ansible_user=k3
+
+[nas]
+nas ansible_ssh_host=192.168.1.21 ansible_user=wilson-server
+
+[pi]
+rpi ansible_ssh_host=192.168.1.3 ansible_user=rpi

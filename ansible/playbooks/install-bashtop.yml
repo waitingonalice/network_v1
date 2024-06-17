@@ -1,0 +1,22 @@
+- hosts: all
+  become: true
+
+  tasks: 
+    - name: Install lm sensors
+      apt: 
+        name: lm-sensors
+        state: latest
+
+- hosts: all
+  become: false    
+  
+  tasks:    
+    - name: Git clone bashtop
+      ansible.builtin.git: 
+        repo: https://github.com/aristocratos/bashtop.git
+        clone: true
+        dest: ./bashtop
+       
+
+
+

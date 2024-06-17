@@ -1,0 +1,10 @@
+pihole
+.env
+s3
+nginx
+letsencrypt
+.DS_Store
+postgres
+pgadmin
+bashtop
+torrent
