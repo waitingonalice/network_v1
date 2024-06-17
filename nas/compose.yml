@@ -1,72 +1,95 @@
-## Jellyfin
-JellyFin is a media server that can be used to stream media files to devices.
+name: home-network
+version: "3.8"
 
-### Usage
-Jellyfin should contain these volumes to run:
-- jelly-config
-- movies
-- tv
+services:
 
-## MinIO
-MinIO is an object storage server that can be used to store files.
-It is similar to Amazon S3.
+  cloudflare:
+    image: cloudflare/cloudflared:latest
+    container_name: cloudflare-tunnel
+    command: tunnel --no-autoupdate run --token $CF_TOKEN
 
-Uses port `9000` for web interface and `9001` for S3.
+  jellyfin:
+    image: lscr.io/linuxserver/jellyfin:latest
+    container_name: jellyfin
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Singapore
+    volumes:
+      - ./torrent/media-service/jelly-config:/config
+      - ./torrent/media-service/movies:/data/movies
+      - ./torrent/media-service/tv:/data/tv
+    ports:
+      - 8096:8096
 
-### Usage
-MinIO should contain these volumes to run:
-- s3
+  minio:
+    image: quay.io/minio/minio
+    container_name: minio
+    ports:
+      - 9000:9000
+      - 9001:9001
+    environment:
+      MINIO_ACCESS_KEY: $MINIO_USER
+      MINIO_SECRET_KEY: $MINIO_PASSWORD
+    volumes:
+      - ./s3:/data
+    command: server /data --console-address ":9001"
 
-## Cloudflare Tunnel
-Cloudflare Tunnel is a service that allows you to expose your local server to the internet.
+  nginx-proxy-manager:
+    image: 'docker.io/jc21/nginx-proxy-manager:latest'
+    ports:
+      - '80:80'
+      - '81:81'
+      - '443:443'
+    volumes:
+      - ./nginx:/data
+      - ./letsencrypt:/etc/letsencrypt
 
-### Usage
-- Requires `startup.sh` to be run first to generate the tunnel ID and secret.
-  - The script contains the command to run the tunnel. If the script is lost, you can find the command in the Cloudflare dashboard, under zero-trust/tunnels/docker config.
+  db-evergreen-prod:
+    image: postgres:15
+    ports:
+      - 6543:5432
+    environment:
+      - POSTGRES_USER=$POSTGRES_USER
+      - POSTGRES_PASSWORD=$POSTGRES_PASSWORD
+      - POSTGRES_DB=$POSTGRES_DB
+    volumes:
+      - ./postgres/evergreen/prod:/var/lib/postgresql/data
 
-### Useful guides
-- [How to use Nginx Proxy Manager to reverse proxy to a local server](https://www.reddit.com/r/nginxproxymanager/comments/17h427w/how_can_i_use_nginx_proxy_manager_to_reverse/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button)
+  db-evergreen-staging:
+    image: postgres:15
+    ports:
+      - 6544:5432
+    environment:
+      - POSTGRES_USER=$POSTGRES_USER
+      - POSTGRES_PASSWORD=$POSTGRES_PASSWORD
+      - POSTGRES_DB=$POSTGRES_DB
+    volumes:
+      - ./postgres/evergreen/staging:/var/lib/postgresql/data
 
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: $PGADMIN_DEFAULT_EMAIL
+      PGADMIN_DEFAULT_PASSWORD: $PGADMIN_DEFAULT_PASSWORD
+      PGADMIN_LISTEN_PORT: 80
+    ports:
+      - 6545:80
+    volumes:
+      - ./pgadmin:/var/lib/pgadmin
 
-## NAS
-Linux NAS set up requires the installation of samba.
-- Link to setting up samba: [Ubuntu official site](https://ubuntu.com/tutorials/install-and-configure-samba#1-overview)
-- Link to support backing up mac with NAS: [Link](https://adamdemasi.com/2018/03/24/using-samba-as-a-time-machine-network-server.html)
-
-### Usage
-```
-[wilson-server]
-path=/home/wilson-server/home-network
-writable=yes
-browsable=yes
-create mask=0777
-directory mask=0777
-public=no
-
-[wilson-timemachine]
-path = /home/wilson-server/time-machine
-browseable = yes
-writeable = yes
-create mask = 0600
-directory mask = 0700
-spotlight = yes
-vfs objects = catia fruit streams_xattr
-fruit:aapl = yes
-fruit:time machine = yes
-```
-
-## Postgres/pgadmin
-Postgres requires the following environment variables to be set:
-  - POSTGRES_USER
-  - POSTGRES_PASSWORD
-  - POSTGRES_DB
-
-It will also require the following volumes to be set, with the following format:
-  - `./postgres/$app_name/$environment:/var/lib/postgresql/data`
-
-Pgadmin requires the following environment variables to be set:
-  - PGADMIN_DEFAULT_EMAIL
-  - PGADMIN_DEFAULT_PASSWORD
-
-It will also require the following volumes to be set:
-  - `./pgadmin:/var/lib/pgadmin`
+  qbittorrent:
+    image: lscr.io/linuxserver/qbittorrent:latest
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+      - WEBUI_PORT=8080
+      - TORRENTING_PORT=6881
+    volumes:
+      - ./torrent/config:/config
+      - ./torrent/downloads:/downloads
+    ports:
+      - 8080:8080
+      - 6881:6881
+      - 6881:6881/udp
