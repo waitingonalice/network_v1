@@ -1,6 +1,5 @@
 #!/bin/bash
-for dir in  "$PWD/pihole" \
-            "$PWD/s3" \
+for dir in  "$PWD/s3" \
             "$PWD/nginx" \
             "$PWD/letsencrypt" \
             "$PWD/postgres" \
