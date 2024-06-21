@@ -38,5 +38,5 @@
     - name: Get k3s kubectl config
       fetch:
         src: /etc/rancher/k3s/k3s.yaml
-        dest: /home/{{ ansible_user }}/home-network/k3s-cluster/k3s.yml
+        dest: /home/{{ ansible_user }}/home-network/k3s/k3s.yml
         flat: yes
