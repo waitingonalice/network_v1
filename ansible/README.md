@@ -27,5 +27,5 @@ ansible -i $inventory_filename $server_group -m ping --ask-pass
 
 - To execute a playbook: 
 ```
-ansible-playbook -kK -i $inventory_file $playbook_file -l $server_group 
+ansible-playbook -kK -i $inventory_file $playbook_file
 ```

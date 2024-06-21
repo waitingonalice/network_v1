@@ -1,0 +1,25 @@
+workers:
+  hosts:
+    worker1:
+      ansible_ssh_host: 192.168.1.27
+      ansible_user: k3
+
+masters:
+  hosts:
+    server1:
+      ansible_ssh_host: 192.168.1.26
+      ansible_user: k2
+
+# This hostgroup is designed to only contains the initial bootstrap master node
+bootstrapMaster:
+  hosts:
+    master:
+      ansible_ssh_host: 192.168.1.25
+      ansible_user: k1
+
+k3s:
+  children:
+    bootstrapMaster:
+    masters:
+    workers:
+  vars:

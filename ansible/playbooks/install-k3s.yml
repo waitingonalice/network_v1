@@ -1,4 +1,4 @@
-- hosts: k3s # update here to specify which server group
+- hosts: all
   become: true
   tasks:
     - name: Install dependencies
@@ -6,10 +6,37 @@
         name: curl
         state: latest
 
-    - name: Install k3s
-      shell: curl -sfL https://get.k3s.io  | INSTALL_K3S_EXEC="--disable=traefik" sh -
+- hosts: bootstrapMaster
+  become: true
+  tasks:
+    - name: Init k3s master node
+      shell: curl -sfL https://get.k3s.io | sh -s - server --cluster-init
+    - name: Extract k3s token
+      command: cat /var/lib/rancher/k3s/server/node-token
+      register: k3s_token
+      failed_when: k3s_token is failed or k3s_token.stdout is undefined
+    # Set the k3s_token fact to be used by the master and worker nodes (variables)
+    - name: Set k3s token
+      set_fact:
+        k3s_token: "{{ k3s_token.stdout }}"
 
-    - name: Check if k3s is running
-      shell: sudo k3s kubectl get nodes
-      register: k3s_status
-      ignore_errors: true
+- hosts: masters
+  become: true
+  tasks:
+    - name: Add k3s master node
+      shell: curl -sfL https://get.k3s.io | sh -s - server --server=https://{{ hostvars['master']['ansible_ssh_host'] }}:6443 --token={{ hostvars['master']['k3s_token'] }}
+
+- hosts: workers
+  become: true
+  tasks:
+    - name: Add k3s worker node
+      shell: curl -sfL https://get.k3s.io | K3S_URL=https://{{ hostvars['master']['ansible_ssh_host'] }}:6443 K3S_TOKEN={{ hostvars['master']['k3s_token'] }} sh -
+
+- hosts: bootstrapMaster
+  become: true
+  tasks:
+    - name: Get k3s kubectl config
+      fetch:
+        src: /etc/rancher/k3s/k3s.yaml
+        dest: /home/{{ ansible_user }}/home-network/k3s-cluster/k3s.yml
+        flat: yes

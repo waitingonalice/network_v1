@@ -1,0 +1,17 @@
+- hosts: bootstrapMaster
+  become: true
+  tasks:
+    - name: Uninstall k3s on bootstrap master node
+      command: /usr/local/bin/k3s-uninstall.sh
+
+- hosts: masters
+  become: true
+  tasks:
+    - name: Uninstall k3s on master nodes
+      command: /usr/local/bin/k3s-uninstall.sh
+
+- hosts: workers
+  become: true
+  tasks:
+    - name: Uninstall k3s on worker nodes
+      command: /usr/local/bin/k3s-agent-uninstall.sh
