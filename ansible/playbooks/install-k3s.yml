@@ -1,0 +1,15 @@
+- hosts: k3s # update here to specify which server group
+  become: true
+  tasks:
+    - name: Install dependencies
+      apt:
+        name: curl
+        state: latest
+
+    - name: Install k3s
+      shell: curl -sfL https://get.k3s.io  | INSTALL_K3S_EXEC="--disable=traefik" sh -
+
+    - name: Check if k3s is running
+      shell: sudo k3s kubectl get nodes
+      register: k3s_status
+      ignore_errors: true
