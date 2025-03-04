@@ -20,4 +20,3 @@ The services include:
 - Minio (S3 compatible object storage)
 - Nginx (Reverse proxy)
 - Proxmox (Virtualization platform)
-- Evergreen (Self-hosted automation and service management software)
