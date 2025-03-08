@@ -1,0 +1,12 @@
+services:
+  # alert_service:
+  #   image: ghcr.io/waitingonalice/alert_service:latest
+
+  weather_bot:
+    image: ghcr.io/waitingonalice/weather_bot:latest
+
+  # watchtower:
+  #   image: containrrr/watchtower
+  #   volumes:
+  #     - /var/run/docker.sock:/var/run/docker.sock
+  #   command: --interval 30

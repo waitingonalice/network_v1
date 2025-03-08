@@ -54,19 +54,3 @@ vfs objects = catia fruit streams_xattr
 fruit:aapl = yes
 fruit:time machine = yes
 ```
-
-## Postgres/pgadmin
-Postgres requires the following environment variables to be set:
-  - POSTGRES_USER
-  - POSTGRES_PASSWORD
-  - POSTGRES_DB
-
-It will also require the following volumes to be set, with the following format:
-  - `./postgres/$app_name/$environment:/var/lib/postgresql/data`
-
-Pgadmin requires the following environment variables to be set:
-  - PGADMIN_DEFAULT_EMAIL
-  - PGADMIN_DEFAULT_PASSWORD
-
-It will also require the following volumes to be set:
-  - `./pgadmin:/var/lib/pgadmin`
