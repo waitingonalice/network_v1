@@ -31,7 +31,7 @@ install_docker_packages(){
 
 login_docker(){
     echo "Logging into Docker..."
-    docker login -u $DOCKER_USER waitingonalice -p $DOCKER_PASSWORD
+    docker login ghcr.io -u $DOCKER_USER -p $DOCKER_PASSWORD
 }
 
 
