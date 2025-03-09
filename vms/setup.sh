@@ -35,11 +35,7 @@ add_docker_user(){
     sudo usermod -aG docker $USER
 }
 
-run_docker_on_boot(){
-    echo "Running docker on boot..."
-    sudo systemctl enable docker.service
-    sudo systemctl enable containerd.service
-}
+
 
 
 login_docker(){
@@ -48,4 +44,4 @@ login_docker(){
 }
 
 
-setup_docker_apt && install_docker_packages && add_docker_user && run_docker_on_boot && docker run hello-world && login_docker
+setup_docker_apt && install_docker_packages && add_docker_user && docker run hello-world && login_docker
