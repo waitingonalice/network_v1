@@ -48,9 +48,4 @@ login_docker(){
 }
 
 
-setup_docker_apt &&
-install_docker_packages &&
-add_docker_user &&
-run_docker_on_boot &&
-docker run hello-world &&
-login_docker
+setup_docker_apt && install_docker_packages && add_docker_user && run_docker_on_boot && docker run hello-world && login_docker
