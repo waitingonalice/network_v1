@@ -38,7 +38,7 @@ add_docker_user(){
 run_docker_on_boot(){
     echo "Running docker on boot..."
     sudo systemctl enable docker.service
-    sudo systemctl enable container.service
+    sudo systemctl enable containerd.service
 }
 
 
