@@ -29,10 +29,28 @@ install_docker_packages(){
     sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 }
 
+add_docker_user(){
+    echo "Adding docker user..."
+    sudo groupadd docker
+    sudo usermod -aG docker $USER
+}
+
+run_docker_on_boot(){
+    echo "Running docker on boot..."
+    sudo systemctl enable docker.service
+    sudo systemctl enable container.service
+}
+
+
 login_docker(){
     echo "Logging into Docker..."
     docker login ghcr.io -u $DOCKER_USER -p $DOCKER_PASSWORD
 }
 
 
-setup_docker_apt && install_docker_packages && sudo docker run hello-world && login_docker
+setup_docker_apt &&
+install_docker_packages &&
+add_docker_user &&
+run_docker_on_boot &&
+docker run hello-world &&
+login_docker
