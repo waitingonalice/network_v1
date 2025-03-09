@@ -1,11 +1,5 @@
 #!/bin/bash
 
-DOCKER_USER=$1
-DOCKER_PASSWORD=$2
-
-echo "DOCKER_USER=$DOCKER_USER"
-echo "DOCKER_PASSWORD=$DOCKER_PASSWORD"
-
 setup_docker_apt() {
     # Add Docker's official GPG key:
     echo "Running docker apt setup..."
@@ -29,19 +23,4 @@ install_docker_packages(){
     sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 }
 
-add_docker_user(){
-    echo "Adding docker user..."
-    sudo groupadd docker
-    sudo usermod -aG docker $USER
-}
-
-
-
-
-login_docker(){
-    echo "Logging into Docker..."
-    docker login ghcr.io -u $DOCKER_USER -p $DOCKER_PASSWORD
-}
-
-
-setup_docker_apt && install_docker_packages && add_docker_user && docker run hello-world && login_docker
+setup_docker_apt && install_docker_packages && docker run hello-world
