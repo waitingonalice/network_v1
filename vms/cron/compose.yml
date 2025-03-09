@@ -5,6 +5,7 @@ services:
   weather_bot:
     container_name: weather_bot
     image: ghcr.io/waitingonalice/weather_bot:latest
+    restart: always
 
   # watchtower:
   #   image: containrrr/watchtower
