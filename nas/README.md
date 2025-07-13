@@ -67,5 +67,5 @@ Mount smb drives in VM
 	- Enter command: `smbclient -L //server_address -U username
 - To mount shared drive: 
 	- mkdir <dirnmame>
-	- sudo mount -t cifs //<server_address>/<share_name> /<dirname> -o username=<your username> password=<your password> 
+	- sudo mount -t cifs //<server_address>/<share_name> <dirname> -o username=<your username> password=<your password> 
 - Once mounted, point docker volume to shared drive, all content should appear in shared drive now
