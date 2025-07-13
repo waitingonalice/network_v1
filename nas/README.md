@@ -32,7 +32,6 @@ Cloudflare Tunnel is a service that allows you to expose your local server to th
 Linux NAS set up requires the installation of samba.
 - Link to setting up samba: [Ubuntu official site](https://ubuntu.com/tutorials/install-and-configure-samba#1-overview)
 - Link to support backing up mac with NAS: [Link](https://adamdemasi.com/2018/03/24/using-samba-as-a-time-machine-network-server.html)
-
 ### Usage
 ```
 [wilson-server]
@@ -54,3 +53,19 @@ vfs objects = catia fruit streams_xattr
 fruit:aapl = yes
 fruit:time machine = yes
 ```
+<!---->
+# SET UP V2
+
+### TrueNAS 
+Create SMB shared drives
+- [TrueNAS SMB share guide](https://www.youtube.com/watch?v=67KtKoW4IM0)
+
+### Media VM
+Mount smb drives in VM
+- Connect to SMB drive and list shared drives
+	- Requires the installation of `smbclient` 
+	- Enter command: `smbclient -L //server_address -U username
+- To mount shared drive: 
+	- mkdir <dirnmame>
+	- sudo mount -t cifs //<server_address>/<share_name> /<dirname> -o username=<your username> password=<your password> 
+- Once mounted, point docker volume to shared drive, all content should appear in shared drive now
