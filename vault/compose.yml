@@ -12,4 +12,8 @@ services:
 
 volumes:
   vaultwarden:
-    external: true
+    driver: local
+    driver_opts:
+      type: nfs
+      o: addr=192.168.1.19,rw,vers=4.1
+      device: ":/mnt/nas/kluster/vaultwarden"
