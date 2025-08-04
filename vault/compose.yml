@@ -6,7 +6,6 @@ services:
     ports: 
       - 8080:80
     restart: unless-stopped
-    user: 3000:3001
     environment:
      - WEBSOCKET_ENABLED=true
 
@@ -15,5 +14,5 @@ volumes:
   vaultwarden:
     driver_opts:
       type: nfs
-      o: "addr=truenas,nolock,soft,nfsvers=4"
+      o: "addr=truenas,nolock,soft,nfsvers=4uid=3000,gid=3001"
       device: ":/mnt/nas/kluster/vaultwarden"
