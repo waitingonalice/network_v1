@@ -2,9 +2,14 @@ services:
   vaultwarden:
     image: vaultwarden/server:latest
     volumes: 
-      - ./vaultwarden:/data
+      - vaultwarden:/data
     ports: 
       - 8080:80
     restart: unless-stopped
     environment:
      - WEBSOCKET_ENABLED=true
+
+
+volumes:
+  vaultwarden:
+    external: true
