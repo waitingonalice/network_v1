@@ -30,4 +30,9 @@ install_docker_packages(){
     sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 }
 
-install_tailscale && setup_docker_apt && install_docker_packages && docker run hello-world
+repo_setup(){
+    echo "Setting up repository..."
+    git clone https://github.com/waitingonalice/network_v1.git
+}
+
+install_tailscale && setup_docker_apt && install_docker_packages && docker run hello-world && repo_setup
