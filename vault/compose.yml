@@ -6,7 +6,7 @@ services:
     ports: 
       - 8080:80
     restart: unless-stopped
-    user: 3000:3000
+    user: 3000:3001
     environment:
      - WEBSOCKET_ENABLED=true
 
