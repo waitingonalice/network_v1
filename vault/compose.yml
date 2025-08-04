@@ -14,5 +14,5 @@ volumes:
   vaultwarden:
     driver_opts:
       type: nfs
-      o: "addr=truenas,nolock,soft,nfsvers=4uid=3000,gid=3001"
+      o: "addr=truenas,nolock,soft,nfsvers=4,uid=3000,gid=3001"
       device: ":/mnt/nas/kluster/vaultwarden"
