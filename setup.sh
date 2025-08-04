@@ -1,5 +1,12 @@
 #!/bin/bash
 
+install_tailscale() {
+    # Install Tailscale
+    echo "Running tailscale setup..."
+    curl -fsSL https://tailscale.com/install.sh | sh
+    sudo tailscale up
+}
+
 setup_docker_apt() {
     # Add Docker's official GPG key:
     echo "Running docker apt setup..."
@@ -23,4 +30,4 @@ install_docker_packages(){
     sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 }
 
-setup_docker_apt && install_docker_packages && docker run hello-world
+install_tailscale && setup_docker_apt && install_docker_packages && docker run hello-world
