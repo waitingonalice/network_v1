@@ -15,4 +15,4 @@ volumes:
     driver_opts:
       type: nfs
       o: "addr=192.168.1.19,nolock,soft,nfsvers=4"
-      device: ":/vaultwarden"
+      device: ":/mnt/nas/kluster/vaultwarden"
