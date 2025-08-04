@@ -9,10 +9,20 @@ services:
     environment:
      - WEBSOCKET_ENABLED=true
 
-
-# volumes:
-#   vaultwarden:
-#     driver_opts:
-#       type: nfs
-#       o: "addr=truenas,nolock,soft,nfsvers=4"
-#       device: ":/mnt/nas/kluster/vaultwarden"
+  nginx:
+    image: nginx:stable-alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro
+      - ./certbot/www:/var/www/certbot
+      - ./certbot/conf:/etc/letsencrypt
+    depends_on:
+      - certbot
+  certbot:
+    image: certbot/certbot
+    volumes:
+      - ./certbot/www:/var/www/certbot
+      - ./certbot/conf:/etc/letsencrypt
+    command: certonly --webroot --webroot-path /var/www/certbot -d vault.moray-banana.ts.net --email fcsie55@gmail.com --agree-tos --no-eff-email
