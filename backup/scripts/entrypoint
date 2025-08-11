@@ -1,0 +1,26 @@
+#!/bin/bash
+#!/bin/bash
+
+set -o errexit
+set -o pipefail
+set -o nounset
+
+echo "Checking database connectivity..."
+
+python << END
+import sys
+import sqlite3
+
+
+try:
+  conn = sqlite3.connect("backup.db")
+  conn.execute("SELECT 1")
+  conn.close()
+  sys.stdout.write("[INFO] SQLite Database is available\n")
+except Exception as error:
+    sys.stderr.write(f"[ERROR] Could not connect to SQLite Database...\n[MESSAGE] {error} \n")
+    exit(1)
+END
+
+# >&2 echo 'PostgreSQL is available'
+exec uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload

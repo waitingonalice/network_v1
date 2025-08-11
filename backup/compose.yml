@@ -1,0 +1,28 @@
+services:
+  backup-service-local: &backup-service 
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: backup_service:latest
+    container_name: backup_service
+    restart: unless-stopped
+    volumes:
+      - ./:/backup-service
+      
+    ports: 
+      - "8000:8000"
+    env_file:
+      - .env
+
+  # backup-service-prod: &backup-service 
+  #   image: backup_service:latest
+  #   container_name: backup_service
+  #   restart: unless-stopped
+  #   volumes:
+  #     # whatever directory user wishes to mount for database
+  #     - ./backup.db:/backup-service/backup.db
+  #   ports: 
+  #     - "8000:8000"
+  #   env_file:
+  #     - .env
+

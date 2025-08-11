@@ -1,8 +1,4 @@
-pihole
-s3
-letsencrypt
 .DS_Store
-pgadmin
-bashtop
-torrent
-k3s.yml
+.env
+venv
+*.db
