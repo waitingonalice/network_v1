@@ -1,8 +1,0 @@
-sqlalchemy
-alembic
-pydantic
-fastapi
-uvicorn
-uuid
-gunicorn
-Cython
