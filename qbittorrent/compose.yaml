@@ -11,6 +11,8 @@ services:
     volumes:
       - /qbittorrent/config:/config
       - /jellyfin/media/downloads:/downloads
+      - /jellyfin/media/movies:/movies
+      - /jellyfin/media/tv:/tv
     ports:
       - 8080:8080
       - 6881:6881
