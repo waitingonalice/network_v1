@@ -13,7 +13,7 @@ services:
       - 8053:80
     environment:
       TZ: 'Asia/Singapore'
-      WEBPASSWORD: $PIHOLE_PASSWORD
+      FTLCONF_webserver_api_password: $PIHOLE_PASSWORD
     dns:
       - 127.0.0.1
       - 8.8.8.8

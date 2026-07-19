@@ -5,7 +5,7 @@
 
 ## Pihole
 
-To set Pihole, you would need to disable Ubuntu's DNS resolver, and set the DNS server to the Pihole's IP address.
+To set Pihole, you would need to disable Ubuntu's DNS resolver, and set the Router DNS to point to the Pihole's IP address.
 
 ```
 sudo systemctl stop systemd-resolved.service
